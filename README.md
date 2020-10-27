@@ -13,4 +13,6 @@ You will also need to download Flutter (which comes with Dart) as well as the Fl
 
 * Download Flutter and follow installation steps [here](https://flutter.dev/docs/get-started/install)
 
+Make sure you uodate your path appropriatly and use flutter doctor to make sure everyhting is in order. To run on iOS make sure to follow the deploy to iOS section.
+
 
