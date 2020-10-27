@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -106,7 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Transform.rotate(
+          angle: 315 * pi / 180,
+          child: Icon(
+            Icons.restaurant_menu,
+          ),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
