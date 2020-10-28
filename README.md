@@ -22,6 +22,7 @@ To connect database to python, pymongo will need to be installed. dnspython will
 * from terminal, type pip install dnspython
 
 You will need to connect to the database through a specific URL.
+
 Copy this line of code:
 myclient = pymongo.MongoClient("mongodb+srv://Payne5220:Knights2020@softwareeng.1ub3g.mongodb.net/sousChef?retryWrites=true&w=majority")
     *note: The user and password have been created for the sole purpose of the sousChef native application and do not satisfy any other known user credentials.
