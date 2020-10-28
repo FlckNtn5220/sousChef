@@ -13,7 +13,7 @@ You will also need to download Flutter (which comes with Dart) as well as the Fl
 
 * Download Flutter and follow installation steps [here](https://flutter.dev/docs/get-started/install)
 
-Make sure you uodate your path appropriatly and use flutter doctor to make sure everyhting is in order. To run on iOS make sure to follow the deploy to iOS section.
+Make sure you uodate your path appropriatly and use flutter doctor to make sure everyhting is in order. To run an iOS emulator make sure to follow the "deploy to iOS" section. Also, to get the app directly onto your iOS device follow instructions [here](https://medium.com/front-end-weekly/how-to-test-your-flutter-ios-app-on-your-ios-device-75924bfd75a8). (Obviously if it gets on the app store you will be able to download it there instead.)
 
 ## Database Notes
 To connect database to python, pymongo will need to be installed. dnspython will also need to be installed if not already.
@@ -24,10 +24,11 @@ To connect database to python, pymongo will need to be installed. dnspython will
 You will need to connect to the database through a specific URL.
 
 Copy this line of code:
-
+```
 myclient = pymongo.MongoClient("mongodb+srv://Payne5220:Knights2020@softwareeng.1ub3g.mongodb.net/sousChef?retryWrites=true&w=majority")
+```
 
-    *note: The user and password have been created for the sole purpose of the sousChef native application and do not satisfy any other known user credentials.
+*note: The user and password have been created for the sole purpose of the sousChef native application and do not satisfy any other known user credentials.
 
 *tutorial on how to use pymongo(https://api.mongodb.com/python/current/tutorial.html)
 
