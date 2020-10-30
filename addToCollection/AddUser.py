@@ -16,7 +16,7 @@ for x in c:
     else:
         break
 
-d = input("Enter pw: ")
+d = input("Enter password: ")
 
 post = {"fName": a, "lName": b, "username": c, "password": d}
 col.insert_one(post)
