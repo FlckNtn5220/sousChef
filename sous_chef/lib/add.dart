@@ -1,54 +1,59 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'lists.dart';
 import 'recipe.dart';
 import 'setting.dart';
-import 'add.dart';
+import 'main.dart';
+import 'lists.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class Add extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sous Chef',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: MyHomePage(title: 'Sous Chef'),
-    );
-  }
+  _AddState createState() => _AddState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _AddState extends State<Add> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+        appBar: AppBar(title: Text('Sous Chef')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  ),
+                  labelText: 'Name',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                ),
+                maxLength: 30,
+              ),
+              padding: EdgeInsets.all(32.0),
+            ),
+            Container(
+              child: TextField(
+                keyboardType: TextInputType.multiline,
+                maxLines: 20,
+                minLines: 1,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  enabledBorder: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
         ),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
           child: FittedBox(
             child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Add()),
-                );
-              },
+              onPressed: () {},
               child: Transform.rotate(
                 angle: 315 * pi / 180,
                 child: Icon(
@@ -74,12 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       iconSize: 30.0,
                       color: Colors.white,
                       icon: Icon(Icons.home),
-                      onPressed: () {}),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyApp()),
+                        );
+                      }),
                   IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    icon: Icon(Icons.list),
                     padding: EdgeInsets.only(right: 28.0),
+                    icon: Icon(Icons.list),
                     onPressed: () {
                       Navigator.push(
                         context,
