@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'recipe.dart';
 import 'setting.dart';
 import 'main.dart';
@@ -48,23 +47,6 @@ class _AddState extends State<Add> {
             ),
           ],
         ),
-        floatingActionButton: Container(
-          height: 65.0,
-          width: 65.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              onPressed: () {},
-              child: Transform.rotate(
-                angle: 315 * pi / 180,
-                child: Icon(
-                  Icons.restaurant_menu,
-                ),
-              ),
-              //elevation: 5.0,
-            ),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
             //elevation: 20.0,
             shape: CircularNotchedRectangle(),
