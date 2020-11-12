@@ -44,10 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: FittedBox(
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Add()),
-                );
+                _showPopupMenu();
               },
               child: Transform.rotate(
                 angle: 315 * pi / 180,
@@ -113,5 +110,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             )));
+  }
+
+  _showPopupMenu() {
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
+          0.0), //position where you want to show the menu on screen
+      items: [
+        PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
+        PopupMenuItem<String>(
+            child: const Text('Create Shopping List'), value: '2'),
+      ],
+      elevation: 8.0,
+    ).then<void>((String itemSelected) {
+      if (itemSelected == null) return;
+
+      if (itemSelected == "1") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Add()),
+        );
+      } else if (itemSelected == "2") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Add()),
+        );
+      }
+    });
   }
 }
