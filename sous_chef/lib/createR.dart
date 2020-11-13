@@ -3,13 +3,15 @@ import 'recipe.dart';
 import 'setting.dart';
 import 'main.dart';
 import 'lists.dart';
+import 'dart:math';
+import 'createS.dart';
 
-class Add extends StatefulWidget {
+class CreateR extends StatefulWidget {
   @override
-  _AddState createState() => _AddState();
+  _CreateRState createState() => _CreateRState();
 }
 
-class _AddState extends State<Add> {
+class _CreateRState extends State<CreateR> {
   //String list
   List<String> _todoItems = [];
   @override
@@ -50,14 +52,32 @@ class _AddState extends State<Add> {
               ),
               padding: EdgeInsets.all(32.0),
             ),
-            _buildTodoList()
+            _buildTodoList(),
+            RaisedButton(
+              onPressed: _pushAddTodoScreen,
+              child: Text('Add Ingredient'),
+            ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-            onPressed:
-                _pushAddTodoScreen, // pressing this button now opens the new screen
-            tooltip: 'Add task',
-            child: Icon(Icons.add)),
+        floatingActionButton: Container(
+          height: 65.0,
+          width: 65.0,
+          child: FittedBox(
+            child: FloatingActionButton(
+              onPressed: () {
+                _showPopupMenu();
+              },
+              child: Transform.rotate(
+                angle: 315 * pi / 180,
+                child: Icon(
+                  Icons.restaurant_menu,
+                ),
+              ),
+              //elevation: 5.0,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
             //elevation: 20.0,
             shape: CircularNotchedRectangle(),
@@ -116,6 +136,31 @@ class _AddState extends State<Add> {
                 ],
               ),
             )));
+  }
+
+  _showPopupMenu() {
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
+          0.0), //position where you want to show the menu on screen
+      items: [
+        PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
+        PopupMenuItem<String>(
+            child: const Text('Create Shopping List'), value: '2'),
+      ],
+      elevation: 8.0,
+    ).then<void>((String itemSelected) {
+      if (itemSelected == null) return;
+
+      if (itemSelected == "1") {
+        return;
+      } else if (itemSelected == "2") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateS()),
+        );
+      }
+    });
   }
 
   // This will be called each time the + button is pressed
@@ -182,7 +227,7 @@ class _AddState extends State<Add> {
               Navigator.pop(context); // Close the add todo screen
             },
             decoration: InputDecoration(
-                hintText: 'Enter something to do...',
+                hintText: 'Enter an ingredient',
                 contentPadding: const EdgeInsets.all(16.0)),
           ));
     }));

@@ -1,43 +1,32 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'lists.dart';
 import 'recipe.dart';
+import 'dart:math';
 import 'setting.dart';
+import 'main.dart';
+import 'lists.dart';
 import 'createR.dart';
-import 'createS.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class CreateS extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sous Chef',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: MyHomePage(title: 'Sous Chef'),
-    );
-  }
+  _CreateSState createState() => _CreateSState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _CreateSState extends State<CreateS> {
+  //String list
+  List<String> _todoItems = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+        appBar: AppBar(title: Text('Sous Chef')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _buildTodoList(),
+            RaisedButton(
+              onPressed: _pushAddTodoScreen,
+              child: Text('Add Item'),
+            ),
+          ],
         ),
         floatingActionButton: Container(
           height: 65.0,
@@ -72,12 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       iconSize: 30.0,
                       color: Colors.white,
                       icon: Icon(Icons.home),
-                      onPressed: () {}),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyApp()),
+                        );
+                      }),
                   IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    icon: Icon(Icons.list),
                     padding: EdgeInsets.only(right: 28.0),
+                    icon: Icon(Icons.list),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -133,11 +127,78 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(builder: (context) => CreateR()),
         );
       } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
-        );
+        return;
       }
     });
+  }
+
+  // This will be called each time the + button is pressed
+  void _addTodoItem(String task) {
+    // Only add the task if the user actually entered something
+    if (task.length > 0) {
+      setState(() => _todoItems.add(task));
+    }
+  }
+
+  void _removeTodoItem(int index) {
+    setState(() => _todoItems.removeAt(index));
+  }
+
+// Show an alert dialog asking the user to confirm that the task is done
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Remove "${_todoItems[index]}"?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('REMOVE'),
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  Widget _buildTodoList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        if (index < _todoItems.length) {
+          return _buildTodoItem(_todoItems[index], index);
+        }
+      },
+    );
+  }
+
+  Widget _buildTodoItem(String todoText, int index) {
+    return ListTile(
+        title: Text(todoText), onTap: () => _promptRemoveTodoItem(index));
+  }
+
+  void _pushAddTodoScreen() {
+    // Push this page onto the stack
+    Navigator.of(context).push(
+        // MaterialPageRoute will automatically animate the screen entry, as well
+        // as adding a back button to close it
+        MaterialPageRoute(builder: (context) {
+      return Scaffold(
+          appBar: AppBar(title: Text('Add a new task')),
+          body: TextField(
+            autofocus: true,
+            onSubmitted: (val) {
+              _addTodoItem(val);
+              Navigator.pop(context); // Close the add todo screen
+            },
+            decoration: InputDecoration(
+                hintText: 'Enter something to do...',
+                contentPadding: const EdgeInsets.all(16.0)),
+          ));
+    }));
   }
 }

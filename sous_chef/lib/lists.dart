@@ -3,7 +3,8 @@ import 'dart:math';
 import 'recipe.dart';
 import 'setting.dart';
 import 'main.dart';
-import 'add.dart';
+import 'createR.dart';
+import 'createS.dart';
 
 class Lists extends StatefulWidget {
   @override
@@ -106,12 +107,12 @@ class _ListsState extends State<Lists> {
       if (itemSelected == "1") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Add()),
+          MaterialPageRoute(builder: (context) => CreateR()),
         );
       } else if (itemSelected == "2") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Add()),
+          MaterialPageRoute(builder: (context) => CreateS()),
         );
       }
     });
