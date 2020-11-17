@@ -26,6 +26,20 @@ class _CreateSState extends State<CreateS> {
               onPressed: _pushAddTodoScreen,
               child: Text('Add Item'),
             ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Lists(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
         floatingActionButton: Container(

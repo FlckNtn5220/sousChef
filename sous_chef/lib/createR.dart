@@ -57,6 +57,20 @@ class _CreateRState extends State<CreateR> {
               onPressed: _pushAddTodoScreen,
               child: Text('Add Ingredient'),
             ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Lists(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
         floatingActionButton: Container(
