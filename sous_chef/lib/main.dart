@@ -3,7 +3,8 @@ import 'dart:math';
 import 'lists.dart';
 import 'recipe.dart';
 import 'setting.dart';
-import 'add.dart';
+import 'createR.dart';
+import 'createS.dart';
 
 void main() {
   runApp(MyApp());
@@ -129,12 +130,12 @@ class _MyHomePageState extends State<MyHomePage> {
       if (itemSelected == "1") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Add()),
+          MaterialPageRoute(builder: (context) => CreateR()),
         );
       } else if (itemSelected == "2") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Add()),
+          MaterialPageRoute(builder: (context) => CreateS()),
         );
       }
     });

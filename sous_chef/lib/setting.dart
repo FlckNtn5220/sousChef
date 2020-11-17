@@ -3,7 +3,8 @@ import 'dart:math';
 import 'lists.dart';
 import 'recipe.dart';
 import 'main.dart';
-import 'add.dart';
+import 'createR.dart';
+import 'createS.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -14,17 +15,14 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('Settings')),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
           child: FittedBox(
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Add()),
-                );
+                _showPopupMenu();
               },
               child: Transform.rotate(
                 angle: 315 * pi / 180,
@@ -90,5 +88,33 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
             )));
+  }
+
+  _showPopupMenu() {
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
+          0.0), //position where you want to show the menu on screen
+      items: [
+        PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
+        PopupMenuItem<String>(
+            child: const Text('Create Shopping List'), value: '2'),
+      ],
+      elevation: 8.0,
+    ).then<void>((String itemSelected) {
+      if (itemSelected == null) return;
+
+      if (itemSelected == "1") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateR()),
+        );
+      } else if (itemSelected == "2") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateS()),
+        );
+      }
+    });
   }
 }

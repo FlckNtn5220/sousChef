@@ -1,63 +1,66 @@
 import 'package:flutter/material.dart';
 import 'recipe.dart';
+import 'dart:math';
 import 'setting.dart';
 import 'main.dart';
 import 'lists.dart';
+import 'createR.dart';
 
-class Add extends StatefulWidget {
+class CreateS extends StatefulWidget {
   @override
-  _AddState createState() => _AddState();
+  _CreateSState createState() => _CreateSState();
 }
 
-class _AddState extends State<Add> {
+class _CreateSState extends State<CreateS> {
   //String list
   List<String> _todoItems = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('List')),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              child: Container(
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: OutlineInputBorder(),
-                  ),
-                  maxLength: 30,
-                ),
-              ),
+            _buildTodoList(),
+            RaisedButton(
+              onPressed: _pushAddTodoScreen,
+              child: Text('Add Item'),
             ),
-            Container(
-              child: TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 30,
-                minLines: 1,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  ),
-                  labelText: 'Description',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.blue,
               ),
-              padding: EdgeInsets.all(32.0),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Lists(),
+                  ),
+                );
+              },
             ),
-            _buildTodoList()
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-            onPressed:
-                _pushAddTodoScreen, // pressing this button now opens the new screen
-            tooltip: 'Add task',
-            child: Icon(Icons.add)),
+        floatingActionButton: Container(
+          height: 65.0,
+          width: 65.0,
+          child: FittedBox(
+            child: FloatingActionButton(
+              onPressed: () {
+                _showPopupMenu();
+              },
+              child: Transform.rotate(
+                angle: 315 * pi / 180,
+                child: Icon(
+                  Icons.restaurant_menu,
+                ),
+              ),
+              //elevation: 5.0,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
             //elevation: 20.0,
             shape: CircularNotchedRectangle(),
@@ -116,6 +119,31 @@ class _AddState extends State<Add> {
                 ],
               ),
             )));
+  }
+
+  _showPopupMenu() {
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
+          0.0), //position where you want to show the menu on screen
+      items: [
+        PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
+        PopupMenuItem<String>(
+            child: const Text('Create Shopping List'), value: '2'),
+      ],
+      elevation: 8.0,
+    ).then<void>((String itemSelected) {
+      if (itemSelected == null) return;
+
+      if (itemSelected == "1") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateR()),
+        );
+      } else if (itemSelected == "2") {
+        return;
+      }
+    });
   }
 
   // This will be called each time the + button is pressed
