@@ -17,7 +17,7 @@ class _CreateSState extends State<CreateS> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('List')),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

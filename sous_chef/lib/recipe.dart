@@ -15,7 +15,7 @@ class _RecipesState extends State<Recipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('Cook Book')),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,

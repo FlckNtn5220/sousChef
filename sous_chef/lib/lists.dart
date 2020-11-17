@@ -15,7 +15,7 @@ class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('Shopping Lists')),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,

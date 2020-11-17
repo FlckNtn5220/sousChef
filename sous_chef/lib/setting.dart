@@ -15,7 +15,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Sous Chef')),
+        appBar: AppBar(title: Text('Settings')),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
