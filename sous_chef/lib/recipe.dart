@@ -6,6 +6,8 @@ import 'main.dart';
 import 'createR.dart';
 import 'createS.dart';
 
+//Holds the list of recipes
+
 class Recipes extends StatefulWidget {
   @override
   _RecipesState createState() => _RecipesState();

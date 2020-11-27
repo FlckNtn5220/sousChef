@@ -6,6 +6,8 @@ import 'main.dart';
 import 'createR.dart';
 import 'createS.dart';
 
+//Unused page that can be given settings changes in future
+
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();

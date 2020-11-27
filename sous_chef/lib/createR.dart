@@ -6,6 +6,8 @@ import 'lists.dart';
 import 'dart:math';
 import 'createS.dart';
 
+//This is where recipes are edited/deleted
+
 class CreateR extends StatefulWidget {
   @override
   _CreateRState createState() => _CreateRState();
@@ -13,7 +15,9 @@ class CreateR extends StatefulWidget {
 
 class _CreateRState extends State<CreateR> {
   //String list
-  List<String> _todoItems = [];
+  List<String> ingredients = [];
+  final TextEditingController eCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,19 +25,17 @@ class _CreateRState extends State<CreateR> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              child: Container(
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: OutlineInputBorder(),
-                  ),
-                  maxLength: 30,
+            Container(
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  enabledBorder: OutlineInputBorder(),
                 ),
+                maxLength: 30,
               ),
             ),
+
             Container(
               child: TextField(
                 keyboardType: TextInputType.multiline,
@@ -52,7 +54,22 @@ class _CreateRState extends State<CreateR> {
               ),
               padding: EdgeInsets.all(32.0),
             ),
-            _buildTodoList(),
+
+            TextField(
+              controller: eCtrl,
+              onSubmitted: (text) {
+                ingredients.add(text);
+                eCtrl.clear();
+                setState(() {});
+              },
+            ),
+            Expanded(
+                child: ListView.builder(
+                    itemCount: ingredients.length,
+                    itemBuilder: (BuildContext ctxt, int Index) {
+                      return Text(ingredients[Index]);
+                    })),
+            //_buildTodoList(),
             RaisedButton(
               onPressed: _pushAddTodoScreen,
               child: Text('Add Ingredient'),
@@ -66,7 +83,7 @@ class _CreateRState extends State<CreateR> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Lists(),
+                    builder: (context) => Recipes(),
                   ),
                 );
               },
@@ -181,49 +198,12 @@ class _CreateRState extends State<CreateR> {
   void _addTodoItem(String task) {
     // Only add the task if the user actually entered something
     if (task.length > 0) {
-      setState(() => _todoItems.add(task));
+      setState(() => ingredients.add(task));
     }
   }
 
-  void _removeTodoItem(int index) {
-    setState(() => _todoItems.removeAt(index));
-  }
-
-// Show an alert dialog asking the user to confirm that the task is done
-  void _promptRemoveTodoItem(int index) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Remove "${_todoItems[index]}"?'),
-              actions: <Widget>[
-                FlatButton(
-                    child: Text('CANCEL'),
-                    onPressed: () => Navigator.of(context).pop()),
-                FlatButton(
-                    child: Text('REMOVE'),
-                    onPressed: () {
-                      _removeTodoItem(index);
-                      Navigator.of(context).pop();
-                    })
-              ]);
-        });
-  }
-
   Widget _buildTodoList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        if (index < _todoItems.length) {
-          return _buildTodoItem(_todoItems[index], index);
-        }
-      },
-    );
-  }
-
-  Widget _buildTodoItem(String todoText, int index) {
-    return ListTile(
-        title: Text(todoText), onTap: () => _promptRemoveTodoItem(index));
+    return TextField();
   }
 
   void _pushAddTodoScreen() {

@@ -6,6 +6,8 @@ import 'main.dart';
 import 'createR.dart';
 import 'createS.dart';
 
+//Holds the many shoping lists
+
 class Lists extends StatefulWidget {
   @override
   _ListsState createState() => _ListsState();

@@ -6,6 +6,8 @@ import 'main.dart';
 import 'lists.dart';
 import 'createR.dart';
 
+//This is where shopping lists are edited/deleted
+
 class CreateS extends StatefulWidget {
   @override
   _CreateSState createState() => _CreateSState();
@@ -14,33 +16,36 @@ class CreateS extends StatefulWidget {
 class _CreateSState extends State<CreateS> {
   //String list
   List<String> _todoItems = [];
+  final TextEditingController eCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('List')),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _buildTodoList(),
-            RaisedButton(
-              onPressed: _pushAddTodoScreen,
-              child: Text('Add Item'),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.check,
-                color: Colors.blue,
+        body: Scrollbar(
+          child: ListView(
+            children: [
+              _buildTodoList(),
+              RaisedButton(
+                onPressed: _addTodoItem,
+                child: Text('Add Item'),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Lists(),
-                  ),
-                );
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Lists(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         floatingActionButton: Container(
           height: 65.0,
@@ -146,16 +151,16 @@ class _CreateSState extends State<CreateS> {
     });
   }
 
-  // This will be called each time the + button is pressed
-  void _addTodoItem(String task) {
-    // Only add the task if the user actually entered something
-    if (task.length > 0) {
-      setState(() => _todoItems.add(task));
-    }
+  // This will be called each time the add item button is pressed
+  void _addTodoItem() {
+    setState(() => _todoItems.add(''));
   }
 
   void _removeTodoItem(int index) {
+    print(_todoItems);
     setState(() => _todoItems.removeAt(index));
+    print(_todoItems);
+    print(index);
   }
 
 // Show an alert dialog asking the user to confirm that the task is done
@@ -181,38 +186,64 @@ class _CreateSState extends State<CreateS> {
 
   Widget _buildTodoList() {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
         if (index < _todoItems.length) {
-          return _buildTodoItem(_todoItems[index], index);
+          return _buildTodoItem(index);
         }
       },
     );
   }
 
-  Widget _buildTodoItem(String todoText, int index) {
-    return ListTile(
-        title: Text(todoText), onTap: () => _promptRemoveTodoItem(index));
+  Widget _buildTodoItem(int index) {
+    return ListItem(UniqueKey(), _todoItems[index], '$index',
+        (x) => _todoItems[index] = x, () => _promptRemoveTodoItem(index));
+  }
+}
+
+class ListItem extends StatefulWidget {
+  UniqueKey key;
+  String initialValue;
+  String index;
+  final Function(String x) onUpdate;
+  final Function() onRemove;
+  ListItem(
+      this.key, this.initialValue, this.index, this.onUpdate, this.onRemove);
+
+  @override
+  _ListItemState createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  TextEditingController _controller;
+
+  //connect API
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
   }
 
-  void _pushAddTodoScreen() {
-    // Push this page onto the stack
-    Navigator.of(context).push(
-        // MaterialPageRoute will automatically animate the screen entry, as well
-        // as adding a back button to close it
-        MaterialPageRoute(builder: (context) {
-      return Scaffold(
-          appBar: AppBar(title: Text('Add a new task')),
-          body: TextField(
-            autofocus: true,
-            onSubmitted: (val) {
-              _addTodoItem(val);
-              Navigator.pop(context); // Close the add todo screen
-            },
-            decoration: InputDecoration(
-                hintText: 'Enter something to do...',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ));
-    }));
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        key: widget.key,
+        title: TextField(
+          controller: _controller,
+          onChanged: (String value) async {
+            widget.onUpdate(value);
+          },
+        ),
+        subtitle: Text(widget.index),
+        trailing: IconButton(
+            icon: Icon(Icons.cancel_rounded),
+            onPressed: () {
+              widget.onRemove();
+            }));
   }
 }
