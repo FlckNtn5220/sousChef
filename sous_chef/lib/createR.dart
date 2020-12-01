@@ -5,6 +5,7 @@ import 'main.dart';
 import 'lists.dart';
 import 'dart:math';
 import 'createS.dart';
+import 'ListItem.dart';
 
 //This is where recipes are edited/deleted
 
@@ -22,11 +23,10 @@ class _CreateRState extends State<CreateR> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Recipe')),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              child: TextField(
+        body: Scrollbar(
+          child: ListView(
+            children: [
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'Name',
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -34,10 +34,7 @@ class _CreateRState extends State<CreateR> {
                 ),
                 maxLength: 30,
               ),
-            ),
-
-            Container(
-              child: TextField(
+              TextField(
                 keyboardType: TextInputType.multiline,
                 maxLines: 30,
                 minLines: 1,
@@ -52,43 +49,27 @@ class _CreateRState extends State<CreateR> {
                   fillColor: Colors.grey[200],
                 ),
               ),
-              padding: EdgeInsets.all(32.0),
-            ),
-
-            TextField(
-              controller: eCtrl,
-              onSubmitted: (text) {
-                ingredients.add(text);
-                eCtrl.clear();
-                setState(() {});
-              },
-            ),
-            Expanded(
-                child: ListView.builder(
-                    itemCount: ingredients.length,
-                    itemBuilder: (BuildContext ctxt, int Index) {
-                      return Text(ingredients[Index]);
-                    })),
-            //_buildTodoList(),
-            RaisedButton(
-              onPressed: _pushAddTodoScreen,
-              child: Text('Add Ingredient'),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.check,
-                color: Colors.blue,
+              _buildTodoList(),
+              RaisedButton(
+                onPressed: _addTodoItem,
+                child: Text('Add Item'),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Recipes(),
-                  ),
-                );
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Lists(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         floatingActionButton: Container(
           height: 65.0,
@@ -194,36 +175,49 @@ class _CreateRState extends State<CreateR> {
     });
   }
 
-  // This will be called each time the + button is pressed
-  void _addTodoItem(String task) {
-    // Only add the task if the user actually entered something
-    if (task.length > 0) {
-      setState(() => ingredients.add(task));
-    }
+  void _addTodoItem() {
+    setState(() => ingredients.add(''));
+  }
+
+  void _removeTodoItem(int index) {
+    setState(() => ingredients.removeAt(index));
+  }
+
+// Show an alert dialog asking the user to confirm that the task is done
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Remove "${ingredients[index]}"?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('REMOVE'),
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
   }
 
   Widget _buildTodoList() {
-    return TextField();
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        if (index < ingredients.length) {
+          return _buildTodoItem(index);
+        }
+      },
+    );
   }
 
-  void _pushAddTodoScreen() {
-    // Push this page onto the stack
-    Navigator.of(context).push(
-        // MaterialPageRoute will automatically animate the screen entry, as well
-        // as adding a back button to close it
-        MaterialPageRoute(builder: (context) {
-      return Scaffold(
-          appBar: AppBar(title: Text('Add a new task')),
-          body: TextField(
-            autofocus: true,
-            onSubmitted: (val) {
-              _addTodoItem(val);
-              Navigator.pop(context); // Close the add todo screen
-            },
-            decoration: InputDecoration(
-                hintText: 'Enter an ingredient',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ));
-    }));
+  Widget _buildTodoItem(int index) {
+    return ListItem(UniqueKey(), ingredients[index], '$index',
+        (x) => ingredients[index] = x, () => _promptRemoveTodoItem(index));
   }
 }

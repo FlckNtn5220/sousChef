@@ -5,6 +5,7 @@ import 'setting.dart';
 import 'main.dart';
 import 'lists.dart';
 import 'createR.dart';
+import 'ListItem.dart';
 
 //This is where shopping lists are edited/deleted
 
@@ -157,10 +158,7 @@ class _CreateSState extends State<CreateS> {
   }
 
   void _removeTodoItem(int index) {
-    print(_todoItems);
     setState(() => _todoItems.removeAt(index));
-    print(_todoItems);
-    print(index);
   }
 
 // Show an alert dialog asking the user to confirm that the task is done
@@ -199,51 +197,5 @@ class _CreateSState extends State<CreateS> {
   Widget _buildTodoItem(int index) {
     return ListItem(UniqueKey(), _todoItems[index], '$index',
         (x) => _todoItems[index] = x, () => _promptRemoveTodoItem(index));
-  }
-}
-
-class ListItem extends StatefulWidget {
-  UniqueKey key;
-  String initialValue;
-  String index;
-  final Function(String x) onUpdate;
-  final Function() onRemove;
-  ListItem(
-      this.key, this.initialValue, this.index, this.onUpdate, this.onRemove);
-
-  @override
-  _ListItemState createState() => _ListItemState();
-}
-
-class _ListItemState extends State<ListItem> {
-  TextEditingController _controller;
-
-  //connect API
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.initialValue);
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        key: widget.key,
-        title: TextField(
-          controller: _controller,
-          onChanged: (String value) async {
-            widget.onUpdate(value);
-          },
-        ),
-        subtitle: Text(widget.index),
-        trailing: IconButton(
-            icon: Icon(Icons.cancel_rounded),
-            onPressed: () {
-              widget.onRemove();
-            }));
   }
 }
