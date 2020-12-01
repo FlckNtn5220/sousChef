@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'lists.dart';
 import 'recipe.dart';
 import 'setting.dart';
 import 'createR.dart';
-import 'createS.dart';
+import 'list.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
+        body: Center(child: Image(image: AssetImage('assets/Chef-Icon.png'))),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
@@ -120,8 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -131,11 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CreateR()),
-        );
-      } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
         );
       }
     });

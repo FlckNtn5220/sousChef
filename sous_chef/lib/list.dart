@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'recipe.dart';
+import 'dart:math';
 import 'setting.dart';
 import 'main.dart';
 import 'createR.dart';
-import 'createS.dart';
+import 'ListItem.dart';
 
-//Holds the many shoping lists
+//This is where shopping lists are edited/deleted
 
 class Lists extends StatefulWidget {
   @override
@@ -14,10 +14,39 @@ class Lists extends StatefulWidget {
 }
 
 class _ListsState extends State<Lists> {
+  //String list
+  List<String> _todoItems = [];
+  final TextEditingController eCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Shopping Lists')),
+        appBar: AppBar(title: Text('List')),
+        body: Scrollbar(
+          child: ListView(
+            children: [
+              _buildTodoList(),
+              RaisedButton(
+                onPressed: _addTodoItem,
+                child: Text('Add Item'),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Lists(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
@@ -62,7 +91,12 @@ class _ListsState extends State<Lists> {
                     color: Colors.white,
                     padding: EdgeInsets.only(right: 28.0),
                     icon: Icon(Icons.list),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Lists()),
+                      );
+                    },
                   ),
                   IconButton(
                     iconSize: 30.0,
@@ -99,8 +133,6 @@ class _ListsState extends State<Lists> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -112,11 +144,55 @@ class _ListsState extends State<Lists> {
           MaterialPageRoute(builder: (context) => CreateR()),
         );
       } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
-        );
+        return;
       }
     });
+  }
+
+  // This will be called each time the add item button is pressed
+  void _addTodoItem() {
+    setState(() => _todoItems.add(''));
+  }
+
+  void _removeTodoItem(int index) {
+    setState(() => _todoItems.removeAt(index));
+  }
+
+// Show an alert dialog asking the user to confirm that the task is done
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Remove "${_todoItems[index]}"?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('REMOVE'),
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  Widget _buildTodoList() {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        if (index < _todoItems.length) {
+          return _buildTodoItem(index);
+        }
+      },
+    );
+  }
+
+  Widget _buildTodoItem(int index) {
+    return ListItem(UniqueKey(), _todoItems[index], '$index',
+        (x) => _todoItems[index] = x, () => _promptRemoveTodoItem(index));
   }
 }

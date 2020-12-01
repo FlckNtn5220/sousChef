@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'recipe.dart';
 import 'setting.dart';
 import 'main.dart';
-import 'lists.dart';
 import 'dart:math';
-import 'createS.dart';
+import 'list.dart';
 import 'ListItem.dart';
 
 //This is where recipes are edited/deleted
@@ -63,7 +62,7 @@ class _CreateRState extends State<CreateR> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Lists(),
+                      builder: (context) => Recipes(),
                     ),
                   );
                 },
@@ -157,8 +156,6 @@ class _CreateRState extends State<CreateR> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -166,11 +163,6 @@ class _CreateRState extends State<CreateR> {
 
       if (itemSelected == "1") {
         return;
-      } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
-        );
       }
     });
   }
