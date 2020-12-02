@@ -21,7 +21,23 @@ class _CreateRState extends State<CreateR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Recipe')),
+        appBar: AppBar(
+          actionsIconTheme:
+              IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
+          title: Text('Recipe'),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
+              child: GestureDetector(
+                  onTap: () {
+                    //Navigaate and send to database
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Recipes()));
+                  },
+                  child: Icon(Icons.check)),
+            )
+          ],
+        ),
         body: Scrollbar(
           child: ListView(
             children: [
@@ -52,20 +68,6 @@ class _CreateRState extends State<CreateR> {
               RaisedButton(
                 onPressed: _addTodoItem,
                 child: Text('Add Item'),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.check,
-                  color: Colors.blue,
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Recipes(),
-                    ),
-                  );
-                },
               ),
             ],
           ),

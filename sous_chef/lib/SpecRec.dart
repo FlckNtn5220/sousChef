@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'recipe.dart';
+import 'createR.dart';
 import 'setting.dart';
 import 'main.dart';
 import 'dart:math';
@@ -16,19 +17,37 @@ class _SpecRecState extends State<SpecRec> {
     'Peanut Butter(Creamy)',
     'Jelly(Grape)',
     'Wheat Bread'
-  ];
+  ]; //Use DB to fill this
+  String title = 'Mitch\'s PB+J'; //Use DB to fetch title
+
   final TextEditingController eCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Recipe')),
+        appBar: AppBar(
+          actionsIconTheme:
+              IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
+          title: Text(title),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
+              child: GestureDetector(
+                  onTap: () {
+                    //Navigate to create recipe page with info about recipe
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CreateR()));
+                  },
+                  child: Icon(Icons.edit)),
+            )
+          ],
+        ),
         body: Scrollbar(
           child: ListView(
             children: [
               //Call API to fill out information
-              Text('Mitch\'s  PB+J'),
-              Text('Same thing as PG+J just toast the bread first'),
+              Text('Directions'),
+              Text('Same thing as PB+J but you must toast the bread first'),
               Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -40,21 +59,23 @@ class _SpecRecState extends State<SpecRec> {
                             trailing: IconButton(
                                 icon: Icon(Icons.add),
                                 color: Colors.blue,
-                                onPressed: () {}));
+                                onPressed: () {
+                                  _promptAddIngredient(ingredients[index]);
+                                }));
                       })),
-
+              RaisedButton(
+                onPressed: () {
+                  _promptAddAllIngredient();
+                },
+                child: Text('Add Item'),
+              ),
               IconButton(
                 icon: Icon(
-                  Icons.check,
+                  Icons.cancel_rounded,
                   color: Colors.blue,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Recipes(),
-                    ),
-                  );
+                  _promptRemoveRecipe();
                 },
               ),
             ],
@@ -137,6 +158,74 @@ class _SpecRecState extends State<SpecRec> {
                 ],
               ),
             )));
+  }
+
+  void _promptAddAllIngredient() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Add all ingredients to shopping list?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('ADD'),
+                    onPressed: () {
+                      //Adds all ingredient to shopping list in DB
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  void _promptAddIngredient(String ingredient) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Add "$ingredient" to shopping list?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('ADD'),
+                    onPressed: () {
+                      //Adds ingredient to shopping list in DB
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  void _promptRemoveRecipe() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text('Delete "$title"?'), actions: <Widget>[
+            FlatButton(
+                child: Text('CANCEL'),
+                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(
+                child: Text('REMOVE'),
+                onPressed: () {
+                  _removeRecipe();
+                  Navigator.of(context).pop();
+                })
+          ]);
+        });
+  }
+
+  void _removeRecipe() {
+    //Take recipe out of DB
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Recipes(),
+      ),
+    );
   }
 
   _showPopupMenu() {
