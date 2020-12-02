@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'setting.dart';
-import 'main.dart';
 import 'createR.dart';
 import 'list.dart';
 import 'SpecRec.dart';
+import 'home.dart';
 
 //Holds the list of recipes
 
@@ -17,7 +17,10 @@ class _RecipesState extends State<Recipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Cook Book')),
+        appBar: AppBar(
+          title: Text('Cook Book'),
+          leading: Container(),
+        ),
         body: Scrollbar(
             child: ListView(
           children: [
@@ -69,7 +72,7 @@ class _RecipesState extends State<Recipes> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
+                        MaterialPageRoute(builder: (context) => Home()),
                       );
                     },
                   ),

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'createR.dart';
+import 'setting.dart';
+import 'list.dart';
 import 'dart:math';
 import 'recipe.dart';
-import 'home.dart';
-import 'createR.dart';
-import 'list.dart';
 
-//Unused page that can be given settings changes in future
-
-class Settings extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _HomeState createState() => _HomeState();
 }
 
-class _SettingsState extends State<Settings> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Settings')),
+        appBar: AppBar(
+          title: Text('Sous Chef'),
+          leading: Container(),
+        ),
+        body: Center(child: Image(image: AssetImage('assets/Chef-Icon.png'))),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
@@ -47,31 +49,26 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   IconButton(
+                      iconSize: 30.0,
+                      color: Colors.white,
+                      icon: Icon(Icons.home),
+                      onPressed: () {}),
+                  IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    icon: Icon(Icons.home),
+                    icon: Icon(Icons.list),
+                    padding: EdgeInsets.only(right: 28.0),
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => Lists()),
                       );
                     },
                   ),
                   IconButton(
-                      iconSize: 30.0,
-                      color: Colors.white,
-                      padding: EdgeInsets.only(right: 28.0),
-                      icon: Icon(Icons.list),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Lists()),
-                        );
-                      }),
-                  IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    padding: EdgeInsets.only(right: 28.0),
+                    padding: EdgeInsets.only(left: 28.0),
                     icon: Icon(Icons.auto_awesome_motion),
                     onPressed: () {
                       Navigator.push(
@@ -84,7 +81,12 @@ class _SettingsState extends State<Settings> {
                     iconSize: 30.0,
                     color: Colors.white,
                     icon: Icon(Icons.settings),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Settings()),
+                      );
+                    },
                   )
                 ],
               ),

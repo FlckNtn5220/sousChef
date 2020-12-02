@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'recipe.dart';
 import 'setting.dart';
-import 'main.dart';
+import 'home.dart';
 import 'dart:math';
 import 'list.dart';
 import 'ListItem.dart';
@@ -22,6 +22,7 @@ class _CreateRState extends State<CreateR> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: Container(),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
           title: Text('Recipe'),
@@ -108,7 +109,7 @@ class _CreateRState extends State<CreateR> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
+                          MaterialPageRoute(builder: (context) => Home()),
                         );
                       }),
                   IconButton(

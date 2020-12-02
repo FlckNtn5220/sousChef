@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'recipe.dart';
 import 'dart:math';
 import 'setting.dart';
-import 'main.dart';
 import 'createR.dart';
 import 'ListItem.dart';
+import 'home.dart';
 
 //This is where shopping lists are edited/deleted
 
@@ -21,7 +21,10 @@ class _ListsState extends State<Lists> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('List')),
+        appBar: AppBar(
+          title: Text('List'),
+          leading: Container(),
+        ),
         body: Scrollbar(
           child: ListView(
             children: [
@@ -32,16 +35,11 @@ class _ListsState extends State<Lists> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.check,
+                  Icons.cancel_rounded,
                   color: Colors.blue,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Lists(),
-                    ),
-                  );
+                  _promptClearTodoList();
                 },
               ),
             ],
@@ -83,7 +81,7 @@ class _ListsState extends State<Lists> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
+                          MaterialPageRoute(builder: (context) => Home()),
                         );
                       }),
                   IconButton(
@@ -176,6 +174,26 @@ class _ListsState extends State<Lists> {
                       Navigator.of(context).pop();
                     })
               ]);
+        });
+  }
+
+  void _promptClearTodoList() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text('Clear list?'), actions: <Widget>[
+            FlatButton(
+                child: Text('CANCEL'),
+                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(
+                child: Text('CLEAR'),
+                onPressed: () {
+                  setState(() {
+                    _todoItems.clear();
+                  });
+                  Navigator.of(context).pop();
+                })
+          ]);
         });
   }
 

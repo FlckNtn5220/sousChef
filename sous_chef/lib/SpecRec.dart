@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'recipe.dart';
 import 'createR.dart';
 import 'setting.dart';
-import 'main.dart';
+import 'home.dart';
 import 'dart:math';
 import 'list.dart';
 
@@ -16,7 +16,14 @@ class _SpecRecState extends State<SpecRec> {
   List<String> ingredients = [
     'Peanut Butter(Creamy)',
     'Jelly(Grape)',
-    'Wheat Bread'
+    'Wheat Bread',
+    'Apple',
+    'Orange',
+    'Banana',
+    'Strawberry',
+    'Pineapple',
+    'Mints',
+    'Bacon'
   ]; //Use DB to fill this
   String title = 'Mitch\'s PB+J'; //Use DB to fetch title
 
@@ -26,6 +33,7 @@ class _SpecRecState extends State<SpecRec> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: Container(),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
           title: Text(title),
@@ -48,26 +56,26 @@ class _SpecRecState extends State<SpecRec> {
               //Call API to fill out information
               Text('Directions'),
               Text('Same thing as PB+J but you must toast the bread first'),
-              Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: ingredients.length,
-                      itemBuilder: (BuildContext ctxt, int index) {
-                        return ListTile(
-                            title: Text(ingredients[index]),
-                            trailing: IconButton(
-                                icon: Icon(Icons.add),
-                                color: Colors.blue,
-                                onPressed: () {
-                                  _promptAddIngredient(ingredients[index]);
-                                }));
-                      })),
+              Text('Ingredients'),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: ingredients.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return ListTile(
+                        title: Text(ingredients[index]),
+                        trailing: IconButton(
+                            icon: Icon(Icons.add),
+                            color: Colors.blue,
+                            onPressed: () {
+                              _promptAddIngredient(ingredients[index]);
+                            }));
+                  }),
               RaisedButton(
                 onPressed: () {
                   _promptAddAllIngredient();
                 },
-                child: Text('Add Item'),
+                child: Text('Add All Ingredients'),
               ),
               IconButton(
                 icon: Icon(
@@ -117,7 +125,7 @@ class _SpecRecState extends State<SpecRec> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
+                          MaterialPageRoute(builder: (context) => Home()),
                         );
                       }),
                   IconButton(
