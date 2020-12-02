@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'lists.dart';
-import 'recipe.dart';
-import 'setting.dart';
-import 'createR.dart';
-import 'createS.dart';
+import 'home.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,111 +27,84 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
   @override
   Widget build(BuildContext context) {
+    final usernameField = TextField(
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Username",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final passwordField = TextField(
+      obscureText: true,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+    final loginButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.green,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          //Check if user entered correct password
+          //If password = username-password
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          );
+        },
+        child: Text("Login",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        floatingActionButton: Container(
-          height: 65.0,
-          width: 65.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              onPressed: () {
-                _showPopupMenu();
-              },
-              child: Transform.rotate(
-                angle: 315 * pi / 180,
-                child: Icon(
-                  Icons.restaurant_menu,
+      body: Center(
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 310.0,
+                  width: 400.0,
+                  child: Image.asset(
+                    "assets/Chef-Icon.png",
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-              //elevation: 5.0,
+                SizedBox(height: 45.0),
+                usernameField,
+                SizedBox(height: 25.0),
+                passwordField,
+                SizedBox(
+                  height: 35.0,
+                ),
+                loginButon,
+                SizedBox(
+                  height: 15.0,
+                ),
+              ],
             ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-            //elevation: 20.0,
-            shape: CircularNotchedRectangle(),
-            child: Container(
-              height: 75,
-              color: Colors.grey[800],
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  IconButton(
-                      iconSize: 30.0,
-                      color: Colors.white,
-                      icon: Icon(Icons.home),
-                      onPressed: () {}),
-                  IconButton(
-                    iconSize: 30.0,
-                    color: Colors.white,
-                    icon: Icon(Icons.list),
-                    padding: EdgeInsets.only(right: 28.0),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Lists()),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    iconSize: 30.0,
-                    color: Colors.white,
-                    padding: EdgeInsets.only(left: 28.0),
-                    icon: Icon(Icons.auto_awesome_motion),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Recipes()),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    iconSize: 30.0,
-                    color: Colors.white,
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Settings()),
-                      );
-                    },
-                  )
-                ],
-              ),
-            )));
-  }
-
-  _showPopupMenu() {
-    showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
-          0.0), //position where you want to show the menu on screen
-      items: [
-        PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
-      ],
-      elevation: 8.0,
-    ).then<void>((String itemSelected) {
-      if (itemSelected == null) return;
-
-      if (itemSelected == "1") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateR()),
-        );
-      } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
-        );
-      }
-    });
+      ),
+    );
   }
 }

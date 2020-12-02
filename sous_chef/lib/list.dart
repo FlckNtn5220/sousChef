@@ -2,45 +2,48 @@ import 'package:flutter/material.dart';
 import 'recipe.dart';
 import 'dart:math';
 import 'setting.dart';
-import 'main.dart';
-import 'lists.dart';
 import 'createR.dart';
+import 'ListItem.dart';
+import 'home.dart';
 
-class CreateS extends StatefulWidget {
+//This is where shopping lists are edited/deleted
+
+class Lists extends StatefulWidget {
   @override
-  _CreateSState createState() => _CreateSState();
+  _ListsState createState() => _ListsState();
 }
 
-class _CreateSState extends State<CreateS> {
+class _ListsState extends State<Lists> {
   //String list
   List<String> _todoItems = [];
+  final TextEditingController eCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('List')),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _buildTodoList(),
-            RaisedButton(
-              onPressed: _pushAddTodoScreen,
-              child: Text('Add Item'),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.check,
-                color: Colors.blue,
+        appBar: AppBar(
+          title: Text('List'),
+          leading: Container(),
+        ),
+        body: Scrollbar(
+          child: ListView(
+            children: [
+              _buildTodoList(),
+              RaisedButton(
+                onPressed: _addTodoItem,
+                child: Text('Add Item'),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Lists(),
-                  ),
-                );
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(
+                  Icons.cancel_rounded,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  _promptClearTodoList();
+                },
+              ),
+            ],
+          ),
         ),
         floatingActionButton: Container(
           height: 65.0,
@@ -78,7 +81,7 @@ class _CreateSState extends State<CreateS> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
+                          MaterialPageRoute(builder: (context) => Home()),
                         );
                       }),
                   IconButton(
@@ -128,8 +131,6 @@ class _CreateSState extends State<CreateS> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -146,12 +147,9 @@ class _CreateSState extends State<CreateS> {
     });
   }
 
-  // This will be called each time the + button is pressed
-  void _addTodoItem(String task) {
-    // Only add the task if the user actually entered something
-    if (task.length > 0) {
-      setState(() => _todoItems.add(task));
-    }
+  // This will be called each time the add item button is pressed
+  void _addTodoItem() {
+    setState(() => _todoItems.add(''));
   }
 
   void _removeTodoItem(int index) {
@@ -179,40 +177,40 @@ class _CreateSState extends State<CreateS> {
         });
   }
 
+  void _promptClearTodoList() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text('Clear list?'), actions: <Widget>[
+            FlatButton(
+                child: Text('CANCEL'),
+                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(
+                child: Text('CLEAR'),
+                onPressed: () {
+                  setState(() {
+                    _todoItems.clear();
+                  });
+                  Navigator.of(context).pop();
+                })
+          ]);
+        });
+  }
+
   Widget _buildTodoList() {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
         if (index < _todoItems.length) {
-          return _buildTodoItem(_todoItems[index], index);
+          return _buildTodoItem(index);
         }
       },
     );
   }
 
-  Widget _buildTodoItem(String todoText, int index) {
-    return ListTile(
-        title: Text(todoText), onTap: () => _promptRemoveTodoItem(index));
-  }
-
-  void _pushAddTodoScreen() {
-    // Push this page onto the stack
-    Navigator.of(context).push(
-        // MaterialPageRoute will automatically animate the screen entry, as well
-        // as adding a back button to close it
-        MaterialPageRoute(builder: (context) {
-      return Scaffold(
-          appBar: AppBar(title: Text('Add a new task')),
-          body: TextField(
-            autofocus: true,
-            onSubmitted: (val) {
-              _addTodoItem(val);
-              Navigator.pop(context); // Close the add todo screen
-            },
-            decoration: InputDecoration(
-                hintText: 'Enter something to do...',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ));
-    }));
+  Widget _buildTodoItem(int index) {
+    return ListItem(UniqueKey(), _todoItems[index], '$index',
+        (x) => _todoItems[index] = x, () => _promptRemoveTodoItem(index));
   }
 }

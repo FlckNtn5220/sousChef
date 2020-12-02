@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'lists.dart';
 import 'recipe.dart';
-import 'main.dart';
+import 'home.dart';
 import 'createR.dart';
-import 'createS.dart';
+import 'list.dart';
+
+//Unused page that can be given settings changes in future
 
 class Settings extends StatefulWidget {
   @override
@@ -52,7 +53,7 @@ class _SettingsState extends State<Settings> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
+                        MaterialPageRoute(builder: (context) => Home()),
                       );
                     },
                   ),
@@ -97,8 +98,6 @@ class _SettingsState extends State<Settings> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -108,11 +107,6 @@ class _SettingsState extends State<Settings> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CreateR()),
-        );
-      } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
         );
       }
     });

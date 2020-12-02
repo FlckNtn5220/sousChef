@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'recipe.dart';
+import 'createR.dart';
 import 'setting.dart';
 import 'home.dart';
 import 'dart:math';
 import 'list.dart';
-import 'ListItem.dart';
 
-//This is where recipes are edited/deleted
-
-class CreateR extends StatefulWidget {
+class SpecRec extends StatefulWidget {
   @override
-  _CreateRState createState() => _CreateRState();
+  _SpecRecState createState() => _SpecRecState();
 }
 
-class _CreateRState extends State<CreateR> {
+class _SpecRecState extends State<SpecRec> {
   //String list
-  List<String> ingredients = [];
+  List<String> ingredients = [
+    'Peanut Butter(Creamy)',
+    'Jelly(Grape)',
+    'Wheat Bread',
+    'Apple',
+    'Orange',
+    'Banana',
+    'Strawberry',
+    'Pineapple',
+    'Mints',
+    'Bacon'
+  ]; //Use DB to fill this
+  String title = 'Mitch\'s PB+J'; //Use DB to fetch title
+
   final TextEditingController eCtrl = TextEditingController();
 
   @override
@@ -25,50 +36,55 @@ class _CreateRState extends State<CreateR> {
           leading: Container(),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
-          title: Text('Recipe'),
+          title: Text(title),
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
               child: GestureDetector(
                   onTap: () {
-                    //Navigaate and send to database
+                    //Navigate to create recipe page with info about recipe
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Recipes()));
+                        MaterialPageRoute(builder: (context) => CreateR()));
                   },
-                  child: Icon(Icons.check)),
+                  child: Icon(Icons.edit)),
             )
           ],
         ),
         body: Scrollbar(
           child: ListView(
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  enabledBorder: OutlineInputBorder(),
-                ),
-                maxLength: 30,
-              ),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 30,
-                minLines: 1,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  ),
-                  labelText: 'Description',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                ),
-              ),
-              _buildTodoList(),
+              //Call API to fill out information
+              Text('Directions'),
+              Text('Same thing as PB+J but you must toast the bread first'),
+              Text('Ingredients'),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: ingredients.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return ListTile(
+                        title: Text(ingredients[index]),
+                        trailing: IconButton(
+                            icon: Icon(Icons.add),
+                            color: Colors.blue,
+                            onPressed: () {
+                              _promptAddIngredient(ingredients[index]);
+                            }));
+                  }),
               RaisedButton(
-                onPressed: _addTodoItem,
-                child: Text('Add Item'),
+                onPressed: () {
+                  _promptAddAllIngredient();
+                },
+                child: Text('Add All Ingredients'),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.cancel_rounded,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  _promptRemoveRecipe();
+                },
               ),
             ],
           ),
@@ -152,10 +168,78 @@ class _CreateRState extends State<CreateR> {
             )));
   }
 
+  void _promptAddAllIngredient() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Add all ingredients to shopping list?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('ADD'),
+                    onPressed: () {
+                      //Adds all ingredient to shopping list in DB
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  void _promptAddIngredient(String ingredient) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Add "$ingredient" to shopping list?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('ADD'),
+                    onPressed: () {
+                      //Adds ingredient to shopping list in DB
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  void _promptRemoveRecipe() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text('Delete "$title"?'), actions: <Widget>[
+            FlatButton(
+                child: Text('CANCEL'),
+                onPressed: () => Navigator.of(context).pop()),
+            FlatButton(
+                child: Text('REMOVE'),
+                onPressed: () {
+                  _removeRecipe();
+                  Navigator.of(context).pop();
+                })
+          ]);
+        });
+  }
+
+  void _removeRecipe() {
+    //Take recipe out of DB
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Recipes(),
+      ),
+    );
+  }
+
   _showPopupMenu() {
     showMenu<String>(
       context: context,
-      position: RelativeRect.fromLTRB(0.0, 400.0, 0.0,
+      position: RelativeRect.fromLTRB(0.0, 500.0, 0.0,
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
@@ -168,51 +252,5 @@ class _CreateRState extends State<CreateR> {
         return;
       }
     });
-  }
-
-  void _addTodoItem() {
-    setState(() => ingredients.add(''));
-  }
-
-  void _removeTodoItem(int index) {
-    setState(() => ingredients.removeAt(index));
-  }
-
-// Show an alert dialog asking the user to confirm that the task is done
-  void _promptRemoveTodoItem(int index) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Remove "${ingredients[index]}"?'),
-              actions: <Widget>[
-                FlatButton(
-                    child: Text('CANCEL'),
-                    onPressed: () => Navigator.of(context).pop()),
-                FlatButton(
-                    child: Text('REMOVE'),
-                    onPressed: () {
-                      _removeTodoItem(index);
-                      Navigator.of(context).pop();
-                    })
-              ]);
-        });
-  }
-
-  Widget _buildTodoList() {
-    return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        if (index < ingredients.length) {
-          return _buildTodoItem(index);
-        }
-      },
-    );
-  }
-
-  Widget _buildTodoItem(int index) {
-    return ListItem(UniqueKey(), ingredients[index], '$index',
-        (x) => ingredients[index] = x, () => _promptRemoveTodoItem(index));
   }
 }

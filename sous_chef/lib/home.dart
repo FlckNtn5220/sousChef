@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'createR.dart';
+import 'setting.dart';
+import 'list.dart';
 import 'dart:math';
 import 'recipe.dart';
-import 'setting.dart';
-import 'main.dart';
-import 'createR.dart';
-import 'createS.dart';
 
-class Lists extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _ListsState createState() => _ListsState();
+  _HomeState createState() => _HomeState();
 }
 
-class _ListsState extends State<Lists> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Shopping Lists')),
+        appBar: AppBar(
+          title: Text('Sous Chef'),
+          leading: Container(),
+        ),
+        body: Center(child: Image(image: AssetImage('assets/Chef-Icon.png'))),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
@@ -49,18 +52,18 @@ class _ListsState extends State<Lists> {
                       iconSize: 30.0,
                       color: Colors.white,
                       icon: Icon(Icons.home),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MyApp()),
-                        );
-                      }),
+                      onPressed: () {}),
                   IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    padding: EdgeInsets.only(right: 28.0),
                     icon: Icon(Icons.list),
-                    onPressed: () {},
+                    padding: EdgeInsets.only(right: 28.0),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Lists()),
+                      );
+                    },
                   ),
                   IconButton(
                     iconSize: 30.0,
@@ -97,8 +100,6 @@ class _ListsState extends State<Lists> {
           0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(child: const Text('Create Recipe'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Create Shopping List'), value: '2'),
       ],
       elevation: 8.0,
     ).then<void>((String itemSelected) {
@@ -108,11 +109,6 @@ class _ListsState extends State<Lists> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => CreateR()),
-        );
-      } else if (itemSelected == "2") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CreateS()),
         );
       }
     });
