@@ -5,15 +5,31 @@ import 'createR.dart';
 import 'list.dart';
 import 'SpecRec.dart';
 import 'home.dart';
+import 'api.dart';
 
 //Holds the list of recipes
 
 class Recipes extends StatefulWidget {
+  final Sous_ChefApi api = Sous_ChefApi();
+
   @override
   _RecipesState createState() => _RecipesState();
 }
 
 class _RecipesState extends State<Recipes> {
+  bool loading = true;
+  List recipe = [];
+  @override
+  void initState() {
+    super.initState();
+    widget.api.getRecipe().then((data) {
+      setState(() {
+        recipe = data;
+        loading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,21 +37,31 @@ class _RecipesState extends State<Recipes> {
           title: Text('Cook Book'),
           leading: Container(),
         ),
-        body: Scrollbar(
-            child: ListView(
-          children: [
-            RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SpecRec(),
-                    ));
-              },
-              child: Text('Mitch\'s PB+J'),
-            )
-          ],
-        )),
+        body: loading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Scrollbar(
+                child: ListView(
+                children: [
+                  ...recipe.map<Widget>((recipe) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ListTile(
+                        key: widget.key,
+                        title: Text(
+                          recipe['name'],
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SpecRec(),
+                              ));
+                        },
+                      )))
+                ],
+              )),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,

@@ -23,8 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  mongo_dart: ^0.3.4
-
+  mongo_dart: ^0.4.3
+  sevr: ^1.0.4
+  dio: ^3.0.10
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

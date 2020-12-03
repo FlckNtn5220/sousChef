@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:sous_chef/server.dart' as server;
 
 void main() {
+  server.start();
   runApp(MyApp());
 }
 
@@ -10,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sous Chef',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),

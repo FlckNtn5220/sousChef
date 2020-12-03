@@ -13,18 +13,7 @@ class SpecRec extends StatefulWidget {
 
 class _SpecRecState extends State<SpecRec> {
   //String list
-  List<String> ingredients = [
-    'Peanut Butter(Creamy)',
-    'Jelly(Grape)',
-    'Wheat Bread',
-    'Apple',
-    'Orange',
-    'Banana',
-    'Strawberry',
-    'Pineapple',
-    'Mints',
-    'Bacon'
-  ]; //Use DB to fill this
+  List<String> ingredients = []; //Use DB to fill this
   String title = 'Mitch\'s PB+J'; //Use DB to fetch title
 
   final TextEditingController eCtrl = TextEditingController();
