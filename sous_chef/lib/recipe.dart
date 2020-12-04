@@ -47,16 +47,18 @@ class _RecipesState extends State<Recipes> {
                   ...recipe.map<Widget>((recipe) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: ListTile(
-                        key: widget.key,
                         title: Text(
-                          recipe['name'],
+                          recipe['recipes']['name'],
                           style: TextStyle(fontSize: 20),
                         ),
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SpecRec(),
+                                builder: (context) => SpecRec(
+                                    recipe['recipes']['name'],
+                                    recipe['recipes']['description'],
+                                    recipe['recipes']['items']),
                               ));
                         },
                       )))

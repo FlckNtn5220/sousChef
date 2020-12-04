@@ -7,4 +7,9 @@ class Sous_ChefApi {
     final response = await _dio.get('');
     return response.data['Recipes'];
   }
+
+  Future<List> createUser(String user, String pwd) async {
+    final response = await _dio.post('', data: {'user': user, 'pwd': pwd});
+    return response.data;
+  }
 }

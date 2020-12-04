@@ -7,25 +7,30 @@ import 'dart:math';
 import 'list.dart';
 
 class SpecRec extends StatefulWidget {
+  final String title;
+  final String directions;
+  final List<dynamic> ingredients;
+  SpecRec(this.title, this.directions, this.ingredients);
+
   @override
   _SpecRecState createState() => _SpecRecState();
 }
 
 class _SpecRecState extends State<SpecRec> {
   //String list
-  List<String> ingredients = []; //Use DB to fill this
-  String title = 'Mitch\'s PB+J'; //Use DB to fetch title
+  List<dynamic> ingredients = []; //Use DB to fill this
 
   final TextEditingController eCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    ingredients = widget.ingredients;
     return Scaffold(
         appBar: AppBar(
           leading: Container(),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
-          title: Text(title),
+          title: Text(widget.title),
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
@@ -44,7 +49,7 @@ class _SpecRecState extends State<SpecRec> {
             children: [
               //Call API to fill out information
               Text('Directions'),
-              Text('Same thing as PB+J but you must toast the bread first'),
+              Text(widget.directions),
               Text('Ingredients'),
               ListView.builder(
                   shrinkWrap: true,
@@ -201,17 +206,19 @@ class _SpecRecState extends State<SpecRec> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(title: Text('Delete "$title"?'), actions: <Widget>[
-            FlatButton(
-                child: Text('CANCEL'),
-                onPressed: () => Navigator.of(context).pop()),
-            FlatButton(
-                child: Text('REMOVE'),
-                onPressed: () {
-                  _removeRecipe();
-                  Navigator.of(context).pop();
-                })
-          ]);
+          return AlertDialog(
+              title: Text('Delete "$widget.title"?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('REMOVE'),
+                    onPressed: () {
+                      _removeRecipe();
+                      Navigator.of(context).pop();
+                    })
+              ]);
         });
   }
 
