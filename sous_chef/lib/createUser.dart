@@ -53,11 +53,10 @@ class CreateUserState extends State<CreateUser> {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             print(_usercontroller.text);
-            print(_controller.text);
             //TODO create condition if username is taken
             _controller.text != _controller2.text || _controller.text == null
                 ? _promptWrongPass()
-                : _usercontroller.text == null //TODO || username is taken
+                : _usercontroller.text == '' //TODO || username is taken
                     ? _promptUserTaken()
                     : Navigator.push(
                         context,

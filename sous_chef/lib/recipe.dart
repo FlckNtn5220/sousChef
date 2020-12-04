@@ -18,13 +18,15 @@ class Recipes extends StatefulWidget {
 
 class _RecipesState extends State<Recipes> {
   bool loading = true;
-  List recipe = [];
+  var recipe = new Map<String, dynamic>();
   @override
   void initState() {
     super.initState();
     widget.api.getRecipe().then((data) {
       setState(() {
-        recipe = data;
+        //Pass which user here
+        recipe = data[0];
+        print(recipe);
         loading = false;
       });
     });
@@ -44,24 +46,24 @@ class _RecipesState extends State<Recipes> {
             : Scrollbar(
                 child: ListView(
                 children: [
-                  ...recipe.map<Widget>((recipe) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: ListTile(
-                        title: Text(
-                          recipe['recipes']['name'],
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SpecRec(
-                                    recipe['recipes']['name'],
-                                    recipe['recipes']['description'],
-                                    recipe['recipes']['items']),
-                              ));
-                        },
-                      )))
+                  // ...recipe[2].map<Widget>((recipe) => Padding(
+                  //     padding: const EdgeInsets.symmetric(vertical: 10),
+                  //     child: ListTile(
+                  //       title: Text(
+                  //         recipe['recipes']['name'],
+                  //         style: TextStyle(fontSize: 20),
+                  //       ),
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => SpecRec(
+                  //                   recipe['recipes']['name'],
+                  //                   recipe['recipes']['description'],
+                  //                   recipe['recipes']['items']),
+                  //             ));
+                  //       },
+                  //     )))
                 ],
               )),
         floatingActionButton: Container(
