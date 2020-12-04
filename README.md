@@ -15,6 +15,10 @@ You will also need to download Flutter (which comes with Dart) as well as the Fl
 
 Make sure you uodate your path appropriatly and use flutter doctor to make sure everyhting is in order. To run an iOS emulator make sure to follow the "deploy to iOS" section. Also, to get the app directly onto your iOS device follow instructions [here](https://medium.com/front-end-weekly/how-to-test-your-flutter-ios-app-on-your-ios-device-75924bfd75a8). (Obviously if it gets on the app store you will be able to download it there instead.)
 
+## Running the App
+
+Open up the project in VScode. You will find the files for the app under the lib folder. To run on iOS emulator make sure your xcode simulator works. To run on android run the Android emulator in android studio. Select either of these emulators in the bottom right hand side of VScode. Press cntrl+F5 to run without debugging or click the run option in the toolbar at the top of the screen. It will take a minute or two to start up the first time. After the initial startup you can use the hot reload capability to see your changes on the emulator immediatly. 
+
 ## Database Notes
 To connect database to python, pymongo will need to be installed. dnspython will also need to be installed if not already.
 
