@@ -49,10 +49,9 @@ class CreateUserState extends State<CreateUser> {
         borderRadius: BorderRadius.circular(30.0),
         color: Colors.green,
         child: MaterialButton(
-          minWidth: MediaQuery.of(context).size.width,
+          minWidth: MediaQuery.of(context).size.width - 100,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
-            print(_usercontroller.text);
             //TODO create condition if username is taken
             _controller.text != _controller2.text || _controller.text == null
                 ? _promptWrongPass()
@@ -63,7 +62,25 @@ class CreateUserState extends State<CreateUser> {
                         MaterialPageRoute(builder: (context) => MyApp()),
                       );
           },
-          child: Text("Done!",
+          child: Text("Done",
+              textAlign: TextAlign.center,
+              style: style.copyWith(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+        ));
+    final backButton = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Colors.green,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width - 200,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
+          },
+          child: Text("Back",
               textAlign: TextAlign.center,
               style: style.copyWith(
                   color: Colors.white, fontWeight: FontWeight.bold)),
@@ -71,30 +88,33 @@ class CreateUserState extends State<CreateUser> {
 
     return Scaffold(
       body: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 45.0),
-                usernameField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                passwordField2,
-                SizedBox(
-                  height: 35.0,
-                ),
-                doneButon,
-                SizedBox(
-                  height: 15.0,
-                ),
-              ],
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 45.0),
+                  usernameField,
+                  SizedBox(height: 25.0),
+                  passwordField,
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  passwordField2,
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  doneButon,
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  backButton
+                ],
+              ),
             ),
           ),
         ),

@@ -17,18 +17,25 @@ class Lists extends StatefulWidget {
 
 class _ListsState extends State<Lists> {
   //String list
-  bool loading = true;
-  List<String> _todoItems = [];
-  @override
-  void initState() {
-    super.initState();
-    widget.api.getRecipe().then((data) {
-      setState(() {
-        print(_todoItems[0]);
-        loading = false;
-      });
-    });
-  }
+  //bool loading = true;
+  List<String> _todoItems = [
+    'Milk',
+    'Eggs',
+    'Apples',
+    'Peanut butter (smooth)',
+    'Jelly',
+    'Bread'
+  ];
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.api.getRecipe().then((data) {
+  //     setState(() {
+  //       print(_todoItems[0]);
+  //       loading = false;
+  //     });
+  //   });
+  // }
 
   final TextEditingController eCtrl = TextEditingController();
 

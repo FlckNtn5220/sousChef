@@ -17,20 +17,25 @@ class Recipes extends StatefulWidget {
 }
 
 class _RecipesState extends State<Recipes> {
-  bool loading = true;
-  var recipe = new Map<String, dynamic>();
-  @override
-  void initState() {
-    super.initState();
-    widget.api.getRecipe().then((data) {
-      setState(() {
-        //Pass which user here
-        recipe = data[0];
-        print(recipe);
-        loading = false;
-      });
-    });
-  }
+  List recipe = ['Potatoe Soup', 'Mitch\'s Grilled Cheese', 'Simple PB+J'];
+  //bool loading = true;
+  //var recipe = new Map<String, dynamic>();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.api.getRecipe().then((data) {
+  //     setState(() {
+  //       //Pass which user here
+  //       recipe = data[0];
+  //       var check = new Map<String, dynamic>();
+  //       check = recipe['recipes'][1];
+  //       print(check[1]);
+  //       //check.split(":");
+
+  //       loading = false;
+  //     });
+  //   });
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -39,33 +44,51 @@ class _RecipesState extends State<Recipes> {
           title: Text('Cook Book'),
           leading: Container(),
         ),
-        body: loading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Scrollbar(
-                child: ListView(
-                children: [
-                  // ...recipe[2].map<Widget>((recipe) => Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 10),
-                  //     child: ListTile(
-                  //       title: Text(
-                  //         recipe['recipes']['name'],
-                  //         style: TextStyle(fontSize: 20),
-                  //       ),
-                  //       onTap: () {
-                  //         Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //               builder: (context) => SpecRec(
-                  //                   recipe['recipes']['name'],
-                  //                   recipe['recipes']['description'],
-                  //                   recipe['recipes']['items']),
-                  //             ));
-                  //       },
-                  //     )))
-                ],
-              )),
+        // body: loading
+        //     ? Center(
+        //         child: CircularProgressIndicator(),
+        //       )
+        //     : Scrollbar(
+        //         child: ListView(
+        //         children: [
+        //           ...recipe.map<Widget>((recipe) => Padding(
+        //               padding: const EdgeInsets.symmetric(vertical: 10),
+        //               child: ListTile(
+        //                 title: Text(
+        //                   recipe['recipes']['name'],
+        //                   style: TextStyle(fontSize: 20),
+        //                 ),
+        //                 onTap: () {
+        //                   Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                         builder: (context) => SpecRec(
+        //                             recipe['recipes']['name'],
+        //                             recipe['recipes']['description'],
+        //                             recipe['recipes']['items']),
+        //                       ));
+        //                 },
+        //               )))
+        //         ],
+        //       )),
+        body: Scrollbar(
+            child: ListView(
+          children: [
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: recipe.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  return ListTile(
+                    title: Text(recipe[index]),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SpecRec()));
+                    },
+                  );
+                })
+          ],
+        )),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,

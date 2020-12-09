@@ -31,7 +31,7 @@ class _CreateRState extends State<CreateR> {
               padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
               child: GestureDetector(
                   onTap: () {
-                    //Navigaate and send to database
+                    //Navigate and send to database
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Recipes()));
                   },
@@ -42,33 +42,44 @@ class _CreateRState extends State<CreateR> {
         body: Scrollbar(
           child: ListView(
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  enabledBorder: OutlineInputBorder(),
-                ),
-                maxLength: 30,
-              ),
-              TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: 30,
-                minLines: 1,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    enabledBorder: OutlineInputBorder(),
                   ),
-                  labelText: 'Description',
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  filled: true,
-                  fillColor: Colors.grey[200],
+                  maxLength: 30,
+                ),
+              ),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 500,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      ),
+                      labelText: 'Description',
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                    ),
+                  ),
                 ),
               ),
               _buildTodoList(),
-              RaisedButton(
-                onPressed: _addTodoItem,
-                child: Text('Add Item'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(100, 10, 100, 0),
+                child: RaisedButton(
+                  onPressed: _addTodoItem,
+                  child: Text('Add Ingredient'),
+                ),
               ),
             ],
           ),
