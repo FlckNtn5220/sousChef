@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef/main.dart';
 import 'dart:math';
 import 'recipe.dart';
 import 'home.dart';
@@ -17,6 +18,14 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Settings')),
+        body: Center(
+          child: RaisedButton(
+            onPressed: () {
+              _promptLogout();
+            },
+            child: Text('Logout'),
+          ),
+        ),
         floatingActionButton: Container(
           height: 65.0,
           width: 65.0,
@@ -71,7 +80,7 @@ class _SettingsState extends State<Settings> {
                   IconButton(
                     iconSize: 30.0,
                     color: Colors.white,
-                    padding: EdgeInsets.only(right: 28.0),
+                    padding: EdgeInsets.only(left: 28.0),
                     icon: Icon(Icons.auto_awesome_motion),
                     onPressed: () {
                       Navigator.push(
@@ -110,5 +119,28 @@ class _SettingsState extends State<Settings> {
         );
       }
     });
+  }
+
+  void _promptLogout() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text('Logout?'), actions: <Widget>[
+            FlatButton(
+                child: Text('NO'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            FlatButton(
+                child: Text('YES'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyApp(), fullscreenDialog: true),
+                  );
+                })
+          ]);
+        });
   }
 }

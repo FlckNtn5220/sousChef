@@ -7,36 +7,35 @@ import 'dart:math';
 import 'list.dart';
 
 class SpecRec extends StatefulWidget {
+  //final String title;
+  //final String directions;
+  //final List<dynamic> ingredients;
+  //SpecRec(this.title, this.directions, this.ingredients);
+
   @override
   _SpecRecState createState() => _SpecRecState();
 }
 
 class _SpecRecState extends State<SpecRec> {
   //String list
-  List<String> ingredients = [
-    'Peanut Butter(Creamy)',
-    'Jelly(Grape)',
-    'Wheat Bread',
-    'Apple',
-    'Orange',
-    'Banana',
-    'Strawberry',
-    'Pineapple',
-    'Mints',
-    'Bacon'
+  List<dynamic> ingredients = [
+    'Peanut butter (Smooth)',
+    'Jelly',
+    'Bread'
   ]; //Use DB to fill this
-  String title = 'Mitch\'s PB+J'; //Use DB to fetch title
 
   final TextEditingController eCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    //ingredients = widget.ingredients;
     return Scaffold(
         appBar: AppBar(
           leading: Container(),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 10.0),
-          title: Text(title),
+          //title: Text(widget.title),
+          title: Text('Simple PB+J'),
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
@@ -54,9 +53,26 @@ class _SpecRecState extends State<SpecRec> {
           child: ListView(
             children: [
               //Call API to fill out information
-              Text('Directions'),
-              Text('Same thing as PB+J but you must toast the bread first'),
-              Text('Ingredients'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
+                    child:
+                        Text('Directions', style: TextStyle(fontSize: 25.0))),
+              ),
+              SizedBox(height: 10.0),
+              //Text(widget.directions),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                    'Spread PB on one slice of bread and jelly on another then put them together and enjoy.'),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: Text(
+                  'Ingredients',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ),
               ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -69,13 +85,17 @@ class _SpecRecState extends State<SpecRec> {
                             color: Colors.blue,
                             onPressed: () {
                               _promptAddIngredient(ingredients[index]);
+                              //Add ingredient to list
                             }));
                   }),
-              RaisedButton(
-                onPressed: () {
-                  _promptAddAllIngredient();
-                },
-                child: Text('Add All Ingredients'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    _promptAddAllIngredient();
+                  },
+                  child: Text('Add All Ingredients'),
+                ),
               ),
               IconButton(
                 icon: Icon(
@@ -212,17 +232,19 @@ class _SpecRecState extends State<SpecRec> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(title: Text('Delete "$title"?'), actions: <Widget>[
-            FlatButton(
-                child: Text('CANCEL'),
-                onPressed: () => Navigator.of(context).pop()),
-            FlatButton(
-                child: Text('REMOVE'),
-                onPressed: () {
-                  _removeRecipe();
-                  Navigator.of(context).pop();
-                })
-          ]);
+          return AlertDialog(
+              title: Text('Delete "$widget.title"?'),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                FlatButton(
+                    child: Text('REMOVE'),
+                    onPressed: () {
+                      _removeRecipe();
+                      Navigator.of(context).pop();
+                    })
+              ]);
         });
   }
 

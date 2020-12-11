@@ -5,17 +5,38 @@ import 'setting.dart';
 import 'createR.dart';
 import 'ListItem.dart';
 import 'home.dart';
+import 'api.dart';
 
 //This is where shopping lists are edited/deleted
 
 class Lists extends StatefulWidget {
+  final Sous_ChefApi api = Sous_ChefApi();
   @override
   _ListsState createState() => _ListsState();
 }
 
 class _ListsState extends State<Lists> {
   //String list
-  List<String> _todoItems = [];
+  //bool loading = true;
+  List<String> _todoItems = [
+    'Milk',
+    'Eggs',
+    'Apples',
+    'Peanut butter (smooth)',
+    'Jelly',
+    'Bread'
+  ];
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.api.getRecipe().then((data) {
+  //     setState(() {
+  //       print(_todoItems[0]);
+  //       loading = false;
+  //     });
+  //   });
+  // }
+
   final TextEditingController eCtrl = TextEditingController();
 
   @override

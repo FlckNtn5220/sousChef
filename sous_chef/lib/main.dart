@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'createUser.dart';
+import 'package:sous_chef/server.dart' as server;
+import 'api.dart';
 
 void main() {
+  server.start();
   runApp(MyApp());
 }
 
@@ -10,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sous Chef',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
@@ -50,57 +55,81 @@ class _MyHomePageState extends State<MyHomePage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final loginButon = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.green,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          //Check if user entered correct password
-          //If password = username-password
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-          );
-        },
-        child: Text("Login",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Colors.green,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width - 100,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () {
+            //Check if user entered correct password
+            //If password = username-password
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Home(), fullscreenDialog: true),
+            );
+          },
+          child: Text("Login",
+              textAlign: TextAlign.center,
+              style: style.copyWith(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+        ));
+    final createUserButton = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Colors.green,
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width - 200,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateUser()),
+            );
+          },
+          child: Text("Create User",
+              textAlign: TextAlign.center,
+              style: style.copyWith(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+        ));
 
     return Scaffold(
       body: Center(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 310.0,
-                  width: 400.0,
-                  child: Image.asset(
-                    "assets/Chef-Icon.png",
-                    fit: BoxFit.fill,
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: 210.0,
+                    width: 400.0,
+                    child: Image.asset(
+                      "assets/Chef-Icon.png",
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
-                SizedBox(height: 45.0),
-                usernameField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                loginButon,
-                SizedBox(
-                  height: 15.0,
-                ),
-              ],
+                  SizedBox(height: 45.0),
+                  usernameField,
+                  SizedBox(height: 25.0),
+                  passwordField,
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  loginButon,
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  createUserButton,
+                  SizedBox(
+                    height: 15.0,
+                  )
+                ],
+              ),
             ),
           ),
         ),

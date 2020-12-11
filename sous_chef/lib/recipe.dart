@@ -5,15 +5,38 @@ import 'createR.dart';
 import 'list.dart';
 import 'SpecRec.dart';
 import 'home.dart';
+import 'api.dart';
 
 //Holds the list of recipes
 
 class Recipes extends StatefulWidget {
+  final Sous_ChefApi api = Sous_ChefApi();
+
   @override
   _RecipesState createState() => _RecipesState();
 }
 
 class _RecipesState extends State<Recipes> {
+  List recipe = ['Potatoe Soup', 'Mitch\'s Grilled Cheese', 'Simple PB+J'];
+  //bool loading = true;
+  //var recipe = new Map<String, dynamic>();
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   widget.api.getRecipe().then((data) {
+  //     setState(() {
+  //       //Pass which user here
+  //       recipe = data[0];
+  //       var check = new Map<String, dynamic>();
+  //       check = recipe['recipes'][1];
+  //       print(check[1]);
+  //       //check.split(":");
+
+  //       loading = false;
+  //     });
+  //   });
+  //}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,19 +44,49 @@ class _RecipesState extends State<Recipes> {
           title: Text('Cook Book'),
           leading: Container(),
         ),
+        // body: loading
+        //     ? Center(
+        //         child: CircularProgressIndicator(),
+        //       )
+        //     : Scrollbar(
+        //         child: ListView(
+        //         children: [
+        //           ...recipe.map<Widget>((recipe) => Padding(
+        //               padding: const EdgeInsets.symmetric(vertical: 10),
+        //               child: ListTile(
+        //                 title: Text(
+        //                   recipe['recipes']['name'],
+        //                   style: TextStyle(fontSize: 20),
+        //                 ),
+        //                 onTap: () {
+        //                   Navigator.push(
+        //                       context,
+        //                       MaterialPageRoute(
+        //                         builder: (context) => SpecRec(
+        //                             recipe['recipes']['name'],
+        //                             recipe['recipes']['description'],
+        //                             recipe['recipes']['items']),
+        //                       ));
+        //                 },
+        //               )))
+        //         ],
+        //       )),
         body: Scrollbar(
             child: ListView(
           children: [
-            RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SpecRec(),
-                    ));
-              },
-              child: Text('Mitch\'s PB+J'),
-            )
+            ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: recipe.length,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  return ListTile(
+                    title: Text(recipe[index]),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SpecRec()));
+                    },
+                  );
+                })
           ],
         )),
         floatingActionButton: Container(
